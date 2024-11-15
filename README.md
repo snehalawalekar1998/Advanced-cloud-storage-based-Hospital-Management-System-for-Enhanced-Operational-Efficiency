@@ -1,4 +1,4 @@
-# Advanced-cloud-storage-based-Hospital-Management-System-for-Enhanced-Operational-Efficiency
+# Advanced-cloud-storage-based-Hospital-Management-System
 **Snehal Awalekar, Bhavna Gupta, Abhilash Chaudhary**
 
 ## Inroduction
