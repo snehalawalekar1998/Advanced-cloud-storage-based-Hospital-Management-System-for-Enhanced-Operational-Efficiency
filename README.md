@@ -13,7 +13,7 @@ The project aims to develop a **Cloud-based Hospital Management System** that is
 - **`billing_service`**: Contains the billing management microservice.
 
 ## Features
-
+- **Cloud Architecture**: Each module operates in sync, allowing for systematic and effective way to manage all the services.
 - **Microservices Architecture**: Each module operates independently, allowing for isolated development and deployment.
 - **Dockerized Services**: Each service has a Dockerfile for consistent and portable deployment.
 - **Responsive UI**: HTML templates for each service provide a simple, user-friendly interface.
