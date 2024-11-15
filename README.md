@@ -33,10 +33,10 @@ The project aims to develop a **Cloud-based Hospital Management System** that is
    ```
 
 3. **Access Services**:
-   - Patient Service: https://34.171.68.133/5001/
+   - Patient Service: https://34.171.68.133/5001
    - Doctor Service:  https://34.171.68.133/5002
-   - Pharmacy Service: `http://localhost:PORT3`
-   - Billing Service: `http://localhost:PORT4`
+   - Billing Service: https://34.171.68.133/5003
+   - Pharmacy Service: https://34.171.68.133/5004
 
 ## Dependencies
 
