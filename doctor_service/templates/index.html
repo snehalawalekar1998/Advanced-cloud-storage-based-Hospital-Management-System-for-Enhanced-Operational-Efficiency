@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Service</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tabs */
+        .tab { display: none; }
+        .tab.active { display: block; }
+        .nav-link {
+            cursor: pointer;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            background-color: #e0e0e0;
+        }
+        .nav-link.active {
+            font-weight: bold;
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Forms and Tables */
+        form {
+            margin: 20px 0;
+        }
+        form label, form input {
+            display: block;
+            margin-bottom: 10px;
+        }
+        form input[type="text"],
+        form input[type="password"],
+        form button {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form button {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Messages */
+        .messages {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .messages li.success { background-color: #d4edda; color: #155724; }
+        .messages li.warning { background-color: #fff3cd; color: #856404; }
+        .messages li.danger { background-color: #f8d7da; color: #721c24; }
+        .messages li.info { background-color: #d1ecf1; color: #0c5460; }
+    </style>
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        }
+
+        function loadAppointments() {
+            fetch('/api/appointments')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector('#appointmentsTableBody');
+                    tableBody.innerHTML = '';
+                    data.appointments.forEach(appointment => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${appointment.patient_name}</td>
+                            <td>${appointment.date}</td>
+                            <td>${appointment.time}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching appointments:', error));
+        }
+
+        window.onload = loadAppointments;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Doctor Service</h1>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="messages">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Login Form -->
+        {% if show_login %}
+        <h2>Login</h2>
+        <form method="POST" action="{{ url_for('login') }}">
+            <label>Username:</label>
+            <input type="text" name="username" required>
+            <label>Password:</label>
+            <input type="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        {% else %}
+
+        <!-- Navigation Links -->
+        <nav>
+            <a class="nav-link active" data-tab="profile" onclick="showTab('profile')">View Profile</a>
+            <a class="nav-link" data-tab="appointments" onclick="showTab('appointments')">Appointment Details</a>
+            <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+        </nav>
+
+        <!-- Profile Tab -->
+        <div id="profile" class="tab active">
+            <h2>Doctor Profile</h2>
+            {% if profile %}
+                <p><strong>Name:</strong> {{ profile.name }}</p>
+                <p><strong>Specialization:</strong> {{ profile.specialization }}</p>
+                <p><strong>Experience:</strong> {{ profile.experience }}</p>
+                <p><strong>Contact:</strong> {{ profile.contact }}</p>
+                <p><strong>Email:</strong> {{ profile.email }}</p>
+            {% else %}
+                <p>No profile information available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Appointments Tab -->
+        <div id="appointments" class="tab">
+            <h2>Appointment Details</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Patient Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody id="appointmentsTableBody">
+                    <!-- Table rows will be populated here using JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+

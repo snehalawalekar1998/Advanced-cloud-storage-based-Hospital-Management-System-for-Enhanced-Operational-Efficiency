@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Service</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tabs */
+        .tab { display: none; }
+        .tab.active { display: block; }
+        .nav-link {
+            cursor: pointer;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            background-color: #e0e0e0;
+        }
+        .nav-link.active {
+            font-weight: bold;
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Forms and Tables */
+        form {
+            margin: 20px 0;
+        }
+        form label, form input {
+            display: block;
+            margin-bottom: 10px;
+        }
+        form input[type="text"],
+        form input[type="password"],
+        form button {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form button {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Messages */
+        .messages {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .messages li.success { background-color: #d4edda; color: #155724; }
+        .messages li.warning { background-color: #fff3cd; color: #856404; }
+        .messages li.danger { background-color: #f8d7da; color: #721c24; }
+        .messages li.info { background-color: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h1>Patient Service</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if show_login %}
+        <h2>Login</h2>
+        <form method="POST" action="{{ url_for('login') }}">
+            <label>Username:</label><input type="text" name="username" required><br>
+            <label>Password:</label><input type="password" name="password" required><br>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+    {% elif show_register %}
+        <h2>Register</h2>
+        <form method="POST" action="{{ url_for('register') }}">
+            <label>Username:</label><input type="text" name="username" required><br>
+            <label>Password:</label><input type="password" name="password" required><br>
+            <button type="submit">Register</button>
+        </form>
+    {% else %}
+        <h2>Welcome, {{ profile.name }}</h2>
+        <button onclick="showSection('profile')">View Profile</button>
+        <button onclick="showSection('schedule_appointment')">Schedule Appointment</button>
+        <button onclick="showSection('view_appointments')">View Appointments</button>
+        <a href="{{ url_for('logout') }}">Logout</a>
+
+        <div id="profile" class="section" style="display: none;">
+            <h3>Profile</h3>
+            <form method="POST" action="{{ url_for('edit_profile') }}">
+                <label>Name:</label><input type="text" name="name" value="{{ profile.name }}"><br>
+                <label>Age:</label><input type="text" name="age" value="{{ profile.age }}"><br>
+                <label>Contact:</label><input type="text" name="contact" value="{{ profile.contact }}"><br>
+                <label>Email:</label><input type="text" name="email" value="{{ profile.email }}"><br>
+                <button type="submit">Update Profile</button>
+            </form>
+        </div>
+
+        <div id="schedule_appointment" class="section" style="display: none;">
+            <h3>Schedule Appointment</h3>
+            <form method="POST" action="{{ url_for('schedule_appointment') }}">
+                <label>Doctor:</label>
+                <select name="doctor_id">
+                    {% for doctor in doctors %}
+                        <option value="{{ doctor.id }}">{{ doctor.name }} - {{ doctor.specialization }}</option>
+                    {% endfor %}
+                </select><br><br>
+                <label>Date:</label><input type="date" name="date" required><br>
+                <label>Time:</label><input type="time" name="time" required><br>
+                <input type="hidden" name="patient_name" value="{{ profile.name }}" required><br>
+                <button type="submit">Schedule</button>
+            </form>
+        </div>
+
+        <div id="view_appointments" class="section" style="display: none;">
+            <h3>Your Appointments</h3>
+            <table>
+                <tr>
+                    <th>Doctor</th><th>Specialization</th><th>Date</th><th>Time</th><th>Actions</th>
+                </tr>
+                {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment.name }}</td>
+                        <td>{{ appointment.specialization }}</td>
+                        <td>{{ appointment.date }}</td>
+                        <td>{{ appointment.time }}</td>
+                        <td>
+                            <a href="{{ url_for('edit_appointment', appointment_id=appointment.id) }}">Edit</a> |
+                            <a href="{{ url_for('delete_appointment', appointment_id=appointment.id) }}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+        <script>
+            function showSection(sectionId) {
+                document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+                document.getElementById(sectionId).style.display = 'block';
+            }
+        </script>
+    {% endif %}
+</body>
+</html>
