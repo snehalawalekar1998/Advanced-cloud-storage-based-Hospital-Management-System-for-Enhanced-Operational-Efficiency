@@ -33,8 +33,8 @@ The project aims to develop a **Cloud-based Hospital Management System** that is
    ```
 
 3. **Access Services**:
-   - Patient Service: `http://localhost:PORT1`
-   - Doctor Service: `http://localhost:PORT2`
+   - Patient Service: https://34.171.68.133/5001/
+   - Doctor Service:  https://34.171.68.133/5002
    - Pharmacy Service: `http://localhost:PORT3`
    - Billing Service: `http://localhost:PORT4`
 
