@@ -5,52 +5,48 @@
 The project aims to develop a **microservices-based Hospital Management System** that streamlines key functions like patient registration, appointment scheduling, and billing. 
 Using Docker for containerization and Docker Compose for orchestration, the system ensures scalability, modularity, and real-time cloud connectivity to enhance operational efficiency and patient care in modern healthcare settings.
 
+## Project Structure
+
+- **`docker-compose.yml`**: Manages and orchestrates services using Docker Compose.
+- **`patient_service`**: Contains the patient management microservice.
+- **`doctor_service`**: Contains the doctor management microservice.
+- **`pharmacy_service`**: Contains the pharmacy management microservice.
+- **`billing_service`**: Contains the billing management microservice.
+
 ## Features
-- **Doctor Service**: Manage doctor information, including specialties, availability, and updates.
-- **Patient Service**: Manage patient information including registration, updates, and retrieval of medical records.
-- **Appointment Service**: Facilitate scheduling, canceling, and managing doctor appointments.
-- **Billing Service**: Manage patient billing and track payments.
 
-## Technology Stack
-- **Flask**: Python web framework for creating REST APIs for the services.
-- **SQLAlchemy**: Database management for handling data models and operations.
-- **SQLite**: Lightweight database for storing service data.
-- **Docker**: Containerization for services.
-- **Docker Compose**: Service orchestration and management.
+- **Microservices Architecture**: Each module operates independently, allowing for isolated development and deployment.
+- **Dockerized Services**: Each service has a Dockerfile for consistent and portable deployment.
+- **Responsive UI**: HTML templates for each service provide a simple, user-friendly interface.
 
-## Prerequisites
-- **Docker**: Ensure Docker is installed and running.
-- **Docker Compose**: To orchestrate the microservices.
+## Setup and Installation
 
-## Setup Instructions
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/yourusername/Major-Project.git
+   cd Major-Project
+   ```
 
-### Installation
-1. **Clone the repository**:
-    ```bash
-    git clone <repository-url>
-    ```
+2. **Build and Run Services**:
+   Ensure Docker is installed and running.
+   ```bash
+   docker-compose up --build
+   ```
 
-2. **Navigate to the project directory**:
-    ```bash
-    cd hospital-management-main
-    ```
+3. **Access Services**:
+   - Patient Service: `http://localhost:PORT1`
+   - Doctor Service: `http://localhost:PORT2`
+   - Pharmacy Service: `http://localhost:PORT3`
+   - Billing Service: `http://localhost:PORT4`
 
-3. **Build and start all services using Docker Compose**:
-    ```bash
-    docker-compose up --build
-    ```
+## Dependencies
 
-4. **Access the services at their respective endpoints**.
+Each service has its own dependencies listed in `requirements.txt`. These are automatically installed during Docker build.
 
-### How to Run the Project
-The **Hospital Management System** is structured as independent microservices that communicate through HTTP APIs. Each service manages its respective database using **SQLite** and exposes RESTful endpoints to other services. **Docker Compose** handles service orchestration, making it easy to scale, maintain, and deploy the system in different environments.
+## Contributing
 
-### Services Endpoints
-- **Patient Service**: `http://localhost:5001`
-- **Doctor Service**: `http://localhost:5002`
-- **Appointment Service**: `http://localhost:5003`
-- **Billing Service**: `http://localhost:5004`
+Please follow the [contribution guidelines](CONTRIBUTING.md) and submit pull requests for review.
 
-## Scalability and Upcoming Improvements
-- **Horizontal scaling**: To accommodate increasing workloads, each service can be scaled separately.
-- **Security Enhancements**: To improve security, include authorization and authentication methods (like OAuth).
+## License
+
+This project is licensed under the MIT License.
