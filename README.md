@@ -2,8 +2,7 @@
 **Snehal Awalekar, Bhavna Gupta, Abhilash Chaudhary**
 
 ## Inroduction
-The project aims to develop a **microservices-based Hospital Management System** that streamlines key functions like patient registration, appointment scheduling, and billing. 
-Using Docker for containerization and Docker Compose for orchestration, the system ensures scalability, modularity, and real-time cloud connectivity to enhance operational efficiency and patient care in modern healthcare settings.
+The project aims to develop a **Cloud-based Hospital Management System** that is a microservices-driven healthcare management system designed to streamline patient care, doctor management, pharmacy operations, and billing processes. This project leverages a modular architecture where each service operates independently, ensuring flexibility, scalability, and easy maintenance. With Dockerized deployment, the system is readily portable across different environments, and each service can be deployed or scaled individually. This approach supports a seamless user experience, where both healthcare providers and patients benefit from synchronized updates, clear interfaces, and efficient service management.
 
 ## Project Structure
 
